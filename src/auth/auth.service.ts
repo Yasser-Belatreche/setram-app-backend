@@ -36,22 +36,36 @@ export class AuthService {
     }
 
     async login(body: LoginDto) {
+        const password = body.password.trim();
         const email = body.email.toLowerCase().trim();
 
         const admin = await prisma.admin.findUnique({ where: { email } });
 
-        if (!admin) throw new BadRequestException(`invalid credentials`);
+        if (admin) {
+            if (!(await this.isPasswordMatch(admin.password, password)))
+                throw new BadRequestException(`invalid credentials`);
 
-        const password = body.password.trim();
+            return {
+                accessToken: await this.jwtService.signAsync({
+                    id: admin.id,
+                    email: admin.email,
+                    role: Role.Admin,
+                }),
+            };
+        }
 
-        if (!(await this.isPasswordMatch(admin.password, password)))
+        const employee = await prisma.employee.findUnique({ where: { email } });
+
+        if (!employee) throw new BadRequestException(`invalid credentials`);
+
+        if (!(await this.isPasswordMatch(employee.password, password)))
             throw new BadRequestException(`invalid credentials`);
 
         return {
             accessToken: await this.jwtService.signAsync({
-                id: admin.id,
-                email: admin.email,
-                role: Role.Admin,
+                id: employee.id,
+                email: employee.email,
+                role: Role.Employee,
             }),
         };
     }
