@@ -30,4 +30,50 @@ model Employee {
   password String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  employeePlanning EmployeePlanning?
+}
+
+model EmployeePlanning {
+  employeeId String @id @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  workTimes WorkTime[]
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
+
+model WorkTime {
+  id String @id @default(cuid())
+  employeeId String
+  label String
+  day String
+  startHour Int
+  endHour Int
+  startMinute Int
+  endMinute Int
+  createdAt DateTime @default(now())
+
+  planning EmployeePlanning @relation(fields: [employeeId], references: [employeeId], onDelete: Cascade)
+}
+
+enum Day {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+model Document {
+  id String @id
+  title String
+  description String
+  departments String[]
+  link String
+  documentPath String
+  documentOriginName String
+  createdAt DateTime @default(now())
 }
