@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsArray, IsNotEmptyObject, IsString } from 'class-validator';
 
 export class UploadDocumentDto {
     @ApiProperty({ type: String })
@@ -11,10 +11,11 @@ export class UploadDocumentDto {
     description: string;
 
     @ApiProperty({ type: [String] })
-    // @IsArray()
+    @IsArray()
     @IsString({ each: true })
     departments: string[];
 
     @ApiProperty({ type: 'string', format: 'binary' })
+    @IsNotEmptyObject()
     document: any;
 }

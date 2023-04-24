@@ -11,7 +11,7 @@ async function bootstrap() {
 
     app.enableCors();
 
-    app.useGlobalPipes(new ValidationPipe({ transform: true }));
+    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
     app.useStaticAssets(join(__dirname, '..', 'public'));
 
