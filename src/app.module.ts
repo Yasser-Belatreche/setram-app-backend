@@ -10,9 +10,10 @@ import { EmployeesModule } from './employees/employees.module';
 import { AuthGuard } from './lib/guards/auth.guard';
 import { RolesGuard } from './lib/guards/roles.guard';
 import { DocumentsModule } from './documents/documents.module';
+import { NewsModule } from './news/news.module';
 
 @Module({
-    imports: [ConfigModule.forRoot(), EmployeesModule, AuthModule, DocumentsModule],
+    imports: [ConfigModule.forRoot(), EmployeesModule, AuthModule, DocumentsModule, NewsModule],
     providers: [
         { provide: APP_GUARD, useClass: AuthGuard },
         { provide: APP_GUARD, useClass: RolesGuard },

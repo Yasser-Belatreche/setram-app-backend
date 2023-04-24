@@ -77,3 +77,55 @@ model Document {
   documentOriginName String
   createdAt DateTime @default(now())
 }
+
+model Announcement {
+  id String @id
+  title String
+  description String
+  departments String[]
+  startDate DateTime
+  endDate DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Event {
+  id String @id
+  title String
+  description String
+  departments String[]
+  eventDate DateTime
+  startDate DateTime
+  endDate DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model JobPost {
+  id String @id
+  title String
+  description String
+  departments String[]
+  location String
+  salary String
+  experience String
+  education String
+  skills String[]
+  benefits String[]
+  contact String
+  applicationDeadline DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Workshop {
+  id String @id
+  title String
+  description String
+  departments String[]
+  workshopDate DateTime
+  startDate DateTime
+  endDate DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}

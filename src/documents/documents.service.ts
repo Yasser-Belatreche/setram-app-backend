@@ -1,11 +1,12 @@
+import * as fs from 'fs';
+import * as path from 'path';
+import * as crypto from 'crypto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { UploadDocumentDto } from './dto/upload-document.dto';
-import { prisma } from '../prisma/prisma.client';
-import * as crypto from 'crypto';
-import * as fs from 'fs';
 import { GetDocumentsParamsDto } from './dto/get-documents-params.dto';
-import * as path from 'path';
+
+import { prisma } from '../prisma/prisma.client';
 
 @Injectable()
 export class DocumentsService {
