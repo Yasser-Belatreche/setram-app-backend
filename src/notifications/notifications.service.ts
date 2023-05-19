@@ -7,6 +7,7 @@ import { GetEmployeesToNotifyQueryParamsDto } from './dtos/get-employees-to-noti
 import { FcmNotifications } from '../lib/notifications/fcm-notifications';
 
 import { prisma } from '../prisma/prisma.client';
+import { GetMyNotificationsQueryParamsDto } from './dtos/get-my-notifications-query-params.dto';
 
 @Injectable()
 export class NotificationsService {
@@ -101,5 +102,53 @@ export class NotificationsService {
         });
 
         await FcmNotifications.PushToMultiple(deviceTokens, { title: dto.title, body: dto.body });
+
+        for (const employee of employees) {
+            await prisma.notification.create({
+                data: {
+                    id: crypto.randomUUID(),
+                    title: dto.title,
+                    body: dto.body,
+                    employeeId: employee.id,
+                    read: false,
+                },
+            });
+        }
+    }
+
+    async getEmployeeNotifications(id: string, filters: GetMyNotificationsQueryParamsDto) {
+        const page = filters.page ?? 1;
+        const perPage = filters.perPage ?? 20;
+
+        const total = await prisma.notification.count({
+            where: { employeeId: id },
+        });
+
+        const employees = await prisma.notification.findMany({
+            where: { employeeId: id },
+            skip: (page - 1) * perPage,
+            take: perPage,
+            orderBy: { createdAt: 'desc' },
+        });
+
+        return {
+            pagination: { total, totalPages: Math.ceil(total / perPage) },
+            list: employees,
+        };
+    }
+
+    async getEmployeeNotificationsUnreadCount(employeeId: string) {
+        return {
+            count: await prisma.notification.count({
+                where: { employeeId, read: false },
+            }),
+        };
+    }
+
+    async markEmployeeNotificationsAsRead(employeeId: string) {
+        await prisma.notification.updateMany({
+            where: { employeeId, read: false },
+            data: { read: true, updatedAt: new Date() },
+        });
     }
 }
