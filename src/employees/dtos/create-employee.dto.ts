@@ -23,8 +23,8 @@ export class CreateEmployeeDto {
     @IsString()
     department: string;
 
-    @ApiProperty({ enum: ['male', 'female'] })
-    @IsIn(['male', 'female'])
+    @ApiProperty({ enum: ['Male', 'Female'] })
+    @IsIn(['Male', 'Female'])
     @IsString()
     gender: 'male' | 'female';
 

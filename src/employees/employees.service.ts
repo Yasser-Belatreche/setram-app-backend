@@ -39,11 +39,14 @@ export class EmployeesService {
 
         if (!employee) throw new NotFoundException(`employee not found`);
 
+        const { newPassword, ...rest } = body;
+
         const email = body.email.trim().toLowerCase();
+        const password = body.newPassword ? await this.encrypt(body.newPassword.trim()) : undefined;
 
         return prisma.employee.update({
             where: { id },
-            data: { ...body, email, updatedAt: new Date() },
+            data: { ...rest, email, password, updatedAt: new Date() },
         });
     }
 

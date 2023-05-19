@@ -12,7 +12,7 @@ export class CreateJobPostDto {
     description: string;
 
     @ApiProperty({ type: [String] })
-    @IsString()
+    @IsString({ each: true })
     departments: string[];
 
     @ApiProperty({ type: String })

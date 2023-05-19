@@ -11,6 +11,7 @@ import {
     Post,
     Query,
     Req,
+    Res,
     UploadedFile,
     UseInterceptors,
 } from '@nestjs/common';
@@ -23,6 +24,8 @@ import { Roles } from '../lib/decorators/roles.decorator';
 
 import { UploadDocumentDto } from './dto/upload-document.dto';
 import { GetDocumentsParamsDto } from './dto/get-documents-params.dto';
+import { Response } from 'express';
+import { Public } from '../lib/decorators/public.decorator';
 
 @ApiTags('documents')
 @Controller('/')
@@ -73,10 +76,22 @@ export class DocumentsController {
         @Param('id') id: string,
         @Body() body: UploadDocumentDto,
         @Headers('host') host: string,
-        @UploadedFile(new ParseFilePipeBuilder().addFileTypeValidator({ fileType: /pdf/ }).build())
+        @UploadedFile(
+            new ParseFilePipeBuilder()
+                .addFileTypeValidator({ fileType: /pdf/ })
+                .build({ fileIsRequired: false }),
+        )
         file: Express.Multer.File | undefined,
     ) {
         return this.documentsService.updateDocument(id, body, file, host);
+    }
+
+    @Get('/api/documents/:id/file')
+    @Public()
+    async getDocumentFile(@Res() res: Response, @Param('id') id: string) {
+        const { documentPath } = await this.documentsService.getDocument(id);
+
+        res.redirect(documentPath.replace('public', ''));
     }
 
     @Get('/api/documents/my')

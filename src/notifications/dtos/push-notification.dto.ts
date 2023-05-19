@@ -1,17 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsString } from 'class-validator';
 
-export class UploadDocumentDto {
+class PushNotificationDto {
+    @ApiProperty({ type: String })
+    @IsString({ each: true })
+    @IsArray()
+    employees: string[];
+
     @ApiProperty({ type: String })
     @IsString()
     title: string;
 
     @ApiProperty({ type: String })
     @IsString()
-    description: string;
-
-    @ApiProperty({ type: [String] })
-    @IsArray()
-    @IsString({ each: true })
-    departments: string[];
+    body: string;
 }
+
+export { PushNotificationDto };

@@ -109,16 +109,16 @@ export class NewsService {
 
         const total = await prisma.announcement.count({
             where: {
-                startDate: { gte: new Date() },
-                endDate: { lte: new Date() },
+                startDate: { lte: new Date() },
+                endDate: { gte: new Date() },
                 departments: { has: employee.department },
             },
         });
 
         const list = await prisma.announcement.findMany({
             where: {
-                startDate: { gte: new Date() },
-                endDate: { lte: new Date() },
+                startDate: { lte: new Date() },
+                endDate: { gte: new Date() },
                 departments: { has: employee.department },
             },
             orderBy: { createdAt: 'desc' },
@@ -238,16 +238,16 @@ export class NewsService {
 
         const total = await prisma.event.count({
             where: {
-                startDate: { gte: new Date() },
-                endDate: { lte: new Date() },
+                startDate: { lte: new Date() },
+                endDate: { gte: new Date() },
                 departments: { has: employee.department },
             },
         });
 
         const list = await prisma.event.findMany({
             where: {
-                startDate: { gte: new Date() },
-                endDate: { lte: new Date() },
+                startDate: { lte: new Date() },
+                endDate: { gte: new Date() },
                 departments: { has: employee.department },
             },
             orderBy: { createdAt: 'desc' },

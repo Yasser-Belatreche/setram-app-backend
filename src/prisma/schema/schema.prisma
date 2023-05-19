@@ -31,7 +31,19 @@ model Employee {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
+  devices DeviceToken[]
   employeePlanning EmployeePlanning?
+}
+
+model DeviceToken {
+  imeiNo String @id @unique
+  token String
+  deviceName String
+  employeeId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 }
 
 model EmployeePlanning {
@@ -76,6 +88,7 @@ model Document {
   documentPath String
   documentOriginName String
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model Announcement {
@@ -129,3 +142,4 @@ model Workshop {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
+

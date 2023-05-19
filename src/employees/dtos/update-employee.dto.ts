@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsEmail, IsIn, IsNotEmpty, IsString, MaxDate } from 'class-validator';
+import { IsDate, IsEmail, IsIn, IsNotEmpty, IsOptional, IsString, MaxDate } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class UpdateEmployeeDto {
@@ -23,10 +23,10 @@ export class UpdateEmployeeDto {
     @IsString()
     department: string;
 
-    @ApiProperty({ enum: ['male', 'female'] })
-    @IsIn(['male', 'female'])
+    @ApiProperty({ enum: ['Male', 'Female'] })
+    @IsIn(['Male', 'Female'])
     @IsString()
-    gender: 'male' | 'female';
+    gender: 'Male' | 'Female';
 
     @ApiProperty({ type: String })
     @Type(() => Date)
@@ -43,4 +43,9 @@ export class UpdateEmployeeDto {
     @IsEmail()
     @IsString()
     email: string;
+
+    @ApiProperty({ type: String })
+    @IsString()
+    @IsOptional()
+    newPassword?: string;
 }

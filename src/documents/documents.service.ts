@@ -59,18 +59,18 @@ export class DocumentsService {
             documentPath: newFile ? newFile.path : document.documentPath,
             documentOriginName: newFile ? newFile.originalname : document.documentOriginName,
             link: document.link,
+            updatedAt: new Date(),
         };
 
         if (newFile) {
-            updatedDocument.documentPath = `public/${document.id}/${document.documentOriginName}`;
-            updatedDocument.link = `${host}/${document.id}/${document.documentOriginName}`;
+            updatedDocument.documentPath = `public/${document.id}/${newFile.originalname}`;
+            updatedDocument.link = `${host}/${document.id}/${newFile.originalname}`;
 
             await fs.promises.mkdir(`public/${document.id}`, { recursive: true });
             await fs.promises.copyFile(newFile.path, updatedDocument.documentPath);
             await fs.promises.unlink(newFile.path);
 
             await fs.promises.unlink(document.documentPath);
-            await fs.promises.rmdir(path.dirname(document.documentPath));
         }
 
         return prisma.document.update({
