@@ -15,7 +15,14 @@ import { FcmNotifications } from './lib/notifications/fcm-notifications';
 import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
-    imports: [ConfigModule.forRoot(), EmployeesModule, AuthModule, DocumentsModule, NewsModule, NotificationsModule],
+    imports: [
+        ConfigModule.forRoot(),
+        EmployeesModule,
+        AuthModule,
+        DocumentsModule,
+        NewsModule,
+        NotificationsModule,
+    ],
     providers: [
         { provide: APP_GUARD, useClass: AuthGuard },
         { provide: APP_GUARD, useClass: RolesGuard },

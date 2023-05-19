@@ -7,12 +7,12 @@ import { Roles } from '../lib/decorators/roles.decorator';
 import { RegisterDeviceDto } from './dtos/register-device.dto';
 
 import { PushNotificationDto } from './dtos/push-notification.dto';
-import { GetEmployeesToQueryParamsDto } from './dtos/get-employees-to-query-params.dto';
+import { GetEmployeesToNotifyQueryParamsDto } from './dtos/get-employees-to-notify-query-params.dto';
 
 import { NotificationsService } from './notifications.service';
 
 @ApiTags('notifications')
-@Controller('notifications')
+@Controller('')
 export class NotificationsController {
     constructor(private readonly notificationsService: NotificationsService) {}
 
@@ -33,7 +33,7 @@ export class NotificationsController {
     @Get('/admin/notifications/employees')
     @ApiBearerAuth()
     @Roles(Role.Admin)
-    getEmployeesToNotify(@Query() query: GetEmployeesToQueryParamsDto) {
+    getEmployeesToNotify(@Query() query: GetEmployeesToNotifyQueryParamsDto) {
         return this.notificationsService.getEmployeesToNotify(query);
     }
 

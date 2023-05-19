@@ -1,9 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsString } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsString } from 'class-validator';
 
 class PushNotificationDto {
     @ApiProperty({ type: String })
     @IsString({ each: true })
+    @ArrayNotEmpty()
     @IsArray()
     employees: string[];
 

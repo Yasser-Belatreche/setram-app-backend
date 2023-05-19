@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { RegisterDeviceDto } from './dtos/register-device.dto';
 import { PushNotificationDto } from './dtos/push-notification.dto';
-import { GetEmployeesToQueryParamsDto } from './dtos/get-employees-to-query-params.dto';
+import { GetEmployeesToNotifyQueryParamsDto } from './dtos/get-employees-to-notify-query-params.dto';
 
 import { FcmNotifications } from '../lib/notifications/fcm-notifications';
 
@@ -15,14 +15,27 @@ export class NotificationsService {
 
         if (!employee) throw new NotFoundException(`employee ${employeeId} not found`);
 
-        return prisma.deviceToken.create({
-            data: {
-                employeeId,
-                imeiNo: info.imeiNo,
-                deviceName: info.deviceName,
-                token: info.token,
-            },
+        const deviceRegistered = await prisma.deviceToken.findUnique({
+            where: { imeiNo: info.imeiNo },
         });
+
+        if (!deviceRegistered)
+            return prisma.deviceToken.create({
+                data: {
+                    employeeId,
+                    imeiNo: info.imeiNo,
+                    deviceName: info.deviceName,
+                    token: info.token,
+                },
+            });
+        else
+            return prisma.deviceToken.update({
+                where: { imeiNo: info.imeiNo },
+                data: {
+                    token: info.token,
+                    deviceName: info.deviceName,
+                },
+            });
     }
 
     async unregisterDevice(employeeId: string, imeiNo: string) {
@@ -43,7 +56,7 @@ export class NotificationsService {
         return prisma.deviceToken.delete({ where: { imeiNo } });
     }
 
-    async getEmployeesToNotify(filters: GetEmployeesToQueryParamsDto) {
+    async getEmployeesToNotify(filters: GetEmployeesToNotifyQueryParamsDto) {
         const page = filters.page ?? 1;
         const perPage = filters.perPage ?? 20;
         const departments: string[] | undefined =

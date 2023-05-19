@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsArray, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
-class GetEmployeesToQueryParamsDto {
+class GetEmployeesToNotifyQueryParamsDto {
     @ApiProperty({ type: [String], required: false })
     @IsString({ each: true })
     @IsArray()
@@ -24,4 +24,4 @@ class GetEmployeesToQueryParamsDto {
     perPage?: number;
 }
 
-export { GetEmployeesToQueryParamsDto };
+export { GetEmployeesToNotifyQueryParamsDto };
