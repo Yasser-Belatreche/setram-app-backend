@@ -1,4 +1,4 @@
-import admin from 'firebase-admin';
+import { credential } from 'firebase-admin';
 import { initializeApp } from 'firebase-admin/app';
 import { getMessaging } from 'firebase-admin/messaging';
 
@@ -11,7 +11,7 @@ export interface Notification {
 const FcmNotifications = {
     Init() {
         initializeApp({
-            credential: admin.credential.applicationDefault(),
+            credential: credential.cert(process.env.GOOGLE_APPLICATION_CREDENTIALS!),
         });
     },
 

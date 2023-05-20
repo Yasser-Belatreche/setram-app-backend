@@ -114,6 +114,8 @@ export class NotificationsService {
                 },
             });
         }
+
+        return { success: true };
     }
 
     async getEmployeeNotifications(id: string, filters: GetMyNotificationsQueryParamsDto) {
