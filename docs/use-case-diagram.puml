@@ -1,7 +1,0 @@
-@startuml
-actor Employee
-actor Admin
-
-Admin -> Employee : Create Employee
-
-@enduml

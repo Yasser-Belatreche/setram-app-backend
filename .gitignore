@@ -37,4 +37,4 @@ lerna-debug.log*
 .idea
 
 public
-config/firebase-config.json
+#config/firebase-config.json

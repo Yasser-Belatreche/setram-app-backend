@@ -1,0 +1,53 @@
+@startuml FCM Notifications Flow
+
+actor Admin as Admin
+participant ":UI" as UI
+participant "System" as System
+participant "DBMS" as DB
+participant "Firebase FCM" as FCM
+participant "App mobile" as Phone
+
+ref over Admin, UI, System
+    s'authentifier
+end ref
+
+-> Admin: Envoyer notification
+
+UI -> Admin: Entrer titre notification
+Admin --> UI: Titre
+
+UI -> Admin: Saisir la corps de la notification
+Admin --> UI: Corps
+
+Admin -> UI: Obtenir la liste des employés
+UI -> System: Obtenir la liste des employés
+activate System
+System -> DB: Select
+activate DB
+DB --> System: Select réponse
+deactivate DB
+System --> UI: Liste des employés réponse
+deactivate System
+
+UI --> Admin: Liste des employés
+
+Admin -> UI: Sélectionnez les employés cibles
+UI --> Admin: Ok
+
+Admin -> UI: Envoyer une notification
+UI -> System: Envoyer une notification
+activate System
+System -> DB: Insert
+activate DB
+deactivate DB
+
+System -> FCM: Envoyer notification
+activate FCM
+System --> UI: Ok
+deactivate System
+UI --> Admin: Notification envoyée
+
+FCM -> Phone: Push notification
+deactivate FCM
+
+@enduml

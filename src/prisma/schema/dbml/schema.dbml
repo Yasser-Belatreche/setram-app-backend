@@ -1,0 +1,152 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table Admin {
+  id String [pk]
+  email String [unique, not null]
+  password String [not null]
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Table Employee {
+  id String [pk]
+  firstName String [not null]
+  lastName String [not null]
+  department String [not null]
+  gender String [not null]
+  birthDate DateTime [not null]
+  startingDate DateTime [not null]
+  phoneNumber String [unique, not null]
+  email String [unique, not null]
+  password String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  notifications Notification [not null]
+  devices DeviceToken [not null]
+  employeePlanning EmployeePlanning
+}
+
+Table DeviceToken {
+  imeiNo String [pk]
+  token String [not null]
+  deviceName String [not null]
+  employeeId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  employee Employee [not null]
+}
+
+Table Notification {
+  id String [pk]
+  title String [not null]
+  body String [not null]
+  read Boolean [not null]
+  employeeId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  employee Employee [not null]
+}
+
+Table EmployeePlanning {
+  employeeId String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  workTimes WorkTime [not null]
+  employee Employee [not null]
+}
+
+Table WorkTime {
+  id String [pk]
+  employeeId String [not null]
+  label String [not null]
+  day String [not null]
+  startHour Int [not null]
+  endHour Int [not null]
+  startMinute Int [not null]
+  endMinute Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  planning EmployeePlanning [not null]
+}
+
+Table Document {
+  id String [pk]
+  title String [not null]
+  description String [not null]
+  departments String[] [not null]
+  link String [not null]
+  documentPath String [not null]
+  documentOriginName String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table Announcement {
+  id String [pk]
+  title String [not null]
+  description String [not null]
+  departments String[] [not null]
+  startDate DateTime [not null]
+  endDate DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table Event {
+  id String [pk]
+  title String [not null]
+  description String [not null]
+  departments String[] [not null]
+  eventDate DateTime [not null]
+  startDate DateTime [not null]
+  endDate DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table JobPost {
+  id String [pk]
+  title String [not null]
+  description String [not null]
+  departments String[] [not null]
+  location String [not null]
+  salary String [not null]
+  experience String [not null]
+  education String [not null]
+  skills String[] [not null]
+  benefits String[] [not null]
+  contact String [not null]
+  applicationDeadline DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table Workshop {
+  id String [pk]
+  title String [not null]
+  description String [not null]
+  departments String[] [not null]
+  workshopDate DateTime [not null]
+  startDate DateTime [not null]
+  endDate DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Enum Day {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+Ref: DeviceToken.employeeId > Employee.id [delete: Cascade]
+
+Ref: Notification.employeeId > Employee.id [delete: Cascade]
+
+Ref: EmployeePlanning.employeeId - Employee.id [delete: Cascade]
+
+Ref: WorkTime.employeeId > EmployeePlanning.employeeId [delete: Cascade]
