@@ -1,3 +1,4 @@
+import * as crypto from 'crypto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { RegisterDeviceDto } from './dtos/register-device.dto';

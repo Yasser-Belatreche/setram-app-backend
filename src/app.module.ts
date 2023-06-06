@@ -1,6 +1,8 @@
+import { join } from 'path';
 import { Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { prisma } from './prisma/prisma.client';
 
@@ -16,6 +18,9 @@ import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
     imports: [
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', 'public'),
+        }),
         ConfigModule.forRoot(),
         EmployeesModule,
         AuthModule,
